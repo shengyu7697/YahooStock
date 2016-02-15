@@ -10,7 +10,7 @@ def debug_print( s, msg = None ):
 
 httplib.HTTPConnection.debuglevel = 1
 
-stock_ids = ( 2324, 8078, 2311, 2330, 2891, 8926 )
+stock_ids = ( '2324', '8078', '2311', '2330', '2891', '8926', '0050' )
 
 opener = urllib2.build_opener()
 opener.addheaders = [('User-agent', 'Mozilla/5.0')]
@@ -28,7 +28,7 @@ iRE_name = re.compile( e, re.I | re.U | re.M | re.S )
 for stock_id in stock_ids:
     # Get web page content
     content = opener.open( 'http://tw.stock.yahoo.com/q/q?s=' + \
-                          str( stock_id ) ).read()
+            stock_id ).read()
 
     # Print the whole content for debugging
     #print content
@@ -47,7 +47,7 @@ for stock_id in stock_ids:
     stock_name = unicode( match_name.groups()[ 0 ], "BIG5" )
 
     # Print result
-    print "%d\t%s\t%.2f" % ( int( stock_id ), stock_name, \
-                            float( stock_price ) )
+    print "%s\t%s\t%.2f" % ( stock_id, stock_name, \
+            float( stock_price ) )
 
 raw_input( "Press any key..." )
