@@ -33,8 +33,18 @@ for stock_id in stock_ids:
     # Print the whole content for debugging
     #print content
 
-    stock_price = iRE_price.match( content ).groups()[ 0 ]
-    stock_name =  unicode( iRE_name.match( content ).groups()[ 0 ], "BIG5" )
+    match_price = iRE_price.match( content )
+    if str(match_price) == 'None':
+        print 'Not found, continue ... '
+        continue
+
+    match_name = iRE_name.match( content )
+    if str(match_name) == 'None':
+        print 'Not found, continue ... '
+        continue
+
+    stock_price = match_price.groups()[ 0 ]
+    stock_name = unicode( match_name.groups()[ 0 ], "BIG5" )
 
     # Print result
     print "%d\t%s\t%.2f" % ( int( stock_id ), stock_name, \
