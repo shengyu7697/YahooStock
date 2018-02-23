@@ -10,7 +10,7 @@ def debug_print( s, msg = None ):
 
 httplib.HTTPConnection.debuglevel = 1
 
-stock_ids = ( '2324', '8078', '2311', '2330', '2891', '8926', '0050' )
+stock_ids = ( '2330', '2891', '2317', '0050' )
 
 opener = urllib2.build_opener()
 opener.addheaders = [('User-agent', 'Mozilla/5.0')]
@@ -50,4 +50,4 @@ for stock_id in stock_ids:
     print "%s\t%s\t%.2f" % ( stock_id, stock_name, \
             float( stock_price ) )
 
-raw_input( "Press any key..." )
+#raw_input( "Press any key..." )
