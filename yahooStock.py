@@ -98,10 +98,12 @@ def getStockInfo(stock_ids):
         print "%s\t%s\t%.2f" % (stock_id, stock_name, float(stock_price))
 
 if __name__ == '__main__':
-    yahoo = YahooTWStock('2330')
-    print "%s\t%s\t%.2f" % (yahoo.get_id(), yahoo.get_name(), yahoo.get_price())
-    
-    #stock_ids = ( '2330', '2891', '2317', '0050' )
+    stock_ids = ('2330', '2891', '2317', '0050')
+
     #getStockInfo(stock_ids)
 
+    for stock_id in stock_ids:
+        yahoo = YahooTWStock(stock_id)
+        print "%s\t%s\t%.2f" % (yahoo.get_id(), yahoo.get_name(), yahoo.get_price())
+    
     #raw_input( "Press any key..." )
