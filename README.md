@@ -4,6 +4,9 @@ YahooStock
 ## Introduction
 Get stock information from yahoo.  
 
+Demo on ubuntu.  
+![demo](https://raw.github.com/shengyu7697/YahooStock/master/demo.gif)  
+
 ## Features
 * 定時更新線上 stock 價格資訊  
 * 使用 requests 取得網頁頁面  
