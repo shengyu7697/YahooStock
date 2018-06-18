@@ -1,30 +1,37 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from yahooStockByUrllib2 import getYahooStockByUrllib2
-from yahooStockByRequests import getYahooStockByRequests
 
-class YahooTWStock(object):
-    def __init__(self, stock_id):
-        self._id = stock_id
-        self._price = 0.0
-        self._name = ''
-        #self.refresh() # refresh too slow, so call it later.
+from YahooTWStock import YahooTWStock
+import time
+import os
 
-    def refresh(self):
-        #self._requestByUrllib2() # urllib2 slower than requests
-        self._requestByRequests()
+def clearScreen():
+    # print('\n' * 80)  # prints 80 line breaks, Faking Clear Screen (for PyCharm)
+    if os.name == 'nt':
+        os.system('cls')  # on windows
+    else:
+        os.system('clear')  # on linux / os x
 
-    def get_id(self):
-        return self._id
+if __name__ == '__main__':
+    stock_ids = ('2330', '2317', '2891', '0050', '0056')
 
-    def get_price(self):
-        return self._price
+    #getStockInfo(stock_ids)
 
-    def get_name(self):
-        return self._name
+    # Creating a list of objects
+    yahoo = []
+    for stock_id in stock_ids:
+        # Storing a list of object instances
+        yahoo.append(YahooTWStock(stock_id))
 
-    def _requestByUrllib2(self):
-        self._price, self._name = getYahooStockByUrllib2(self._id)
+    while (1):
+        for i in range(len(stock_ids)):
+            yahoo[i].refresh()
+            print("%s\t%s\t%.2f") % (yahoo[i].get_id(), yahoo[i].get_name(), yahoo[i].get_price())
 
-    def _requestByRequests(self):
-        self._price, self._name = getYahooStockByRequests(self._id)
+        print("wait 5 sec to refresh...")
+        time.sleep(5)
+
+        clearScreen()
+
+
+    #raw_input( "Press any key..." )
