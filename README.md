@@ -11,13 +11,20 @@ Demo on ubuntu.
 * 定時更新線上 stock 價格資訊  
 * 使用 requests 取得網頁頁面  
 
+## Install
+安裝必要的第三方套件  
+```
+$ pip install requests
+$ pip install terminaltables
+```
+
 ## How to Use
 change the stock_ids variable and execute.  
 ```
 $ ./yahooStock.py
 ```
 
-# Todo
+## Todo
 * 支援 BeautifulSoup 解析  
 * 從檔案讀取股票代號 (使用 csv 儲存格式)  
 * 寫入 股票代號 股票名稱 價格 是否到價提醒 設定價格 以上通知/以下通知  
