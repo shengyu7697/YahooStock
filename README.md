@@ -9,7 +9,7 @@ Demo on ubuntu.
 * 定時更新線上 stock 價格資訊  
 * 使用 requests 取得網頁頁面  
 
-## Install
+## Dependencies
 安裝必要的第三方套件  
 ```
 $ pip install requests
