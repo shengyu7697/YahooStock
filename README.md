@@ -1,7 +1,5 @@
 YahooStock
 ==========
-
-## Introduction
 Get stock information from yahoo.  
 
 Demo on ubuntu.  
