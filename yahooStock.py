@@ -19,21 +19,17 @@ if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
 
+    stock_ids = ('2330', '2317', '2891', '0050', '0051', '0056')
+    stock_ids_num = len(stock_ids)
+
     # Init table
-    table_data = [
-        ['股票代號', '股票名稱', '股價'],
-        ['', '', ''],
-        ['', '', ''],
-        ['', '', ''],
-        ['', '', ''],
-        ['', '', '']
-    ]
+    table_data = []
+    table_data.append(['股票代號', '股票名稱', '股價'])
+    for i in range(stock_ids_num):
+        table_data.append(['', '', ''])
+
     #table = AsciiTable(table_data)
     table = SingleTable(table_data)
-
-    stock_ids = ('2330', '2317', '2891', '0050', '0056')
-
-    #getStockInfo(stock_ids)
 
     # Creating a list of objects
     yahoo = []
@@ -43,7 +39,7 @@ if __name__ == '__main__':
 
     while (1):
         print("refresh...")
-        for i in range(len(stock_ids)):
+        for i in range(stock_ids_num):
             yahoo[i].refresh()
             #print("%6s | %s | %.2f") % (yahoo[i].get_id(), yahoo[i].get_name(), yahoo[i].get_price())
             table.table_data[i+1][0] = yahoo[i].get_id()
@@ -55,6 +51,3 @@ if __name__ == '__main__':
 
         print("wait 5 sec to refresh...")
         time.sleep(5)
-
-
-    #raw_input( "Press any key..." )
