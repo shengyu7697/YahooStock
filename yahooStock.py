@@ -19,7 +19,7 @@ if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
 
-    stock_ids = ('2330', '2317', '2891', '0050', '0051', '0056')
+    stock_ids = ('2330', '2317', '2002', '1301', '2412', '2891', '0050', '0051', '0056', '00646')
     stock_ids_num = len(stock_ids)
 
     # Init table
