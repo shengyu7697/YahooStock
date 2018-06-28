@@ -4,7 +4,7 @@
 import requests
 import re
 
-def getYahooStockByRequests(id):
+def getStockFromYahoo(id):
 	r = requests.get("http://tw.stock.yahoo.com/q/q?s=%s" % id)
 	content = r.content
 
@@ -37,7 +37,7 @@ def debug_print(msg):
 	print('[%s] %s' % (tag, msg))
 
 if __name__ == '__main__':
-	price, name = getYahooStockByRequests(2330)
+	price, name = getStockFromYahoo(2330)
 
 	print(price)
 	print(name)
