@@ -18,14 +18,14 @@ def getYahooStockByUrllib2(id):
 	# For finding stock name
 	# pattern: >2330台積電</a><br><a href="/pf/pfsel?stocklist=
 	e = ".*>\d+" + r'(.+)</a><br><a href="/pf/pfsel\?stocklist=.*'
-	debug_print(e, "for name")
+	#debug_print(e)
 	iRE_name = re.compile(e, re.I | re.U | re.M | re.S)
 
 	# Get web page content
 	content = opener.open('http://tw.stock.yahoo.com/q/q?s=%s' % id).read()
 
 	# Print the whole content for debugging
-	# print content
+	#print(content)
 
 	match_price = iRE_price.match(content)
 	if str(match_price) == 'None':
@@ -39,9 +39,9 @@ def getYahooStockByUrllib2(id):
 	_name = unicode(match_name.groups()[0], "BIG5")
 	return _price, _name
 
-def debug_print(s, msg = None):
-    #print "[DEBUG]", msg, s
-    pass
+def debug_print(msg):
+	tag = 'DEBUG'
+	print('[%s] %s' % (tag, msg))
 
 if __name__ == '__main__':
 	price, name = getYahooStockByUrllib2(2330)
