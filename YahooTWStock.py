@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from getYahooStockByUrllib2 import getYahooStockByUrllib2
 from getYahooStockByRequests import getYahooStockByRequests
 
 class YahooTWStock(object):
@@ -11,8 +10,7 @@ class YahooTWStock(object):
         #self.refresh() # refresh too slow, so call it later.
 
     def refresh(self):
-        #self._requestByUrllib2() # urllib2 slower than requests
-        self._requestByRequests()
+        self._request()
 
     def get_id(self):
         return self._id
@@ -23,8 +21,5 @@ class YahooTWStock(object):
     def get_name(self):
         return self._name
 
-    def _requestByUrllib2(self):
-        self._price, self._name = getYahooStockByUrllib2(self._id)
-
-    def _requestByRequests(self):
+    def _request(self):
         self._price, self._name = getYahooStockByRequests(self._id)
