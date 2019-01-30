@@ -38,7 +38,7 @@ if __name__ == '__main__':
         yahoo.append(YahooTWStock(stock_id))
 
     while (1):
-        print("refresh...")
+        print('refresh...')
         for i in range(stock_ids_num):
             yahoo[i].refresh()
             #print("%6s | %s | %.2f") % (yahoo[i].get_id(), yahoo[i].get_name(), yahoo[i].get_price())
@@ -47,7 +47,8 @@ if __name__ == '__main__':
             table.table_data[i+1][2] = yahoo[i].get_price()
 
         clearScreen()
-        print table.table
+        print(table.table)
 
-        print("wait 5 sec to refresh...")
-        time.sleep(5)
+        for i in range(5):
+            print('wait %d sec to refresh...' % (5-i))
+            time.sleep(1)
