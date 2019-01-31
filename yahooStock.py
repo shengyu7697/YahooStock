@@ -42,7 +42,7 @@ if __name__ == '__main__':
         print('refresh...')
         for i in range(stock_ids_num):
             yahoo[i].refresh()
-            #print("%6s | %s | %.2f") % (yahoo[i].get_id(), yahoo[i].get_name(), yahoo[i].get_price())
+            #print('%6s | %s | %.2f' % (yahoo[i].get_id(), yahoo[i].get_name(), yahoo[i].get_price()))
             table.table_data[i+1][0] = yahoo[i].get_id()
             table.table_data[i+1][1] = yahoo[i].get_name()
             table.table_data[i+1][2] = yahoo[i].get_price()
