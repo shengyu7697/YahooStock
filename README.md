@@ -30,7 +30,7 @@ $ ./yahooStock.py
 * 平日 0900am - 1300pm 才做  
 
 ## System Requirement
-* 可以執行Python的系統
+* 可以執行Python2 或 Python3 的系統
 
 ## Develop Environment
 * Python

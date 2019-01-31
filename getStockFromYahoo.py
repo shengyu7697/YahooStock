@@ -3,10 +3,15 @@
 
 import requests
 import re
+import chardet
 
 def getStockFromYahoo(id):
 	r = requests.get('http://tw.stock.yahoo.com/q/q?s=%s' % id)
 	content = r.content
+	
+	# 根據傳進來的參數自動辨別編碼格式，然後進行相應的解碼
+	encode_type = chardet.detect(content)
+	content = content.decode(encode_type['encoding'])
 
 	# For finding stock price
 	iRE_price = re.compile(r'.*nowrap><b>([\d.]+)<.*', re.I | re.U | re.M | re.S)
@@ -29,7 +34,7 @@ def getStockFromYahoo(id):
 		print('Not found')
 
 	_price = float(match_price.groups()[0])
-	_name = unicode(match_name.groups()[0], 'BIG5')
+	_name = match_name.groups()[0]
 	return _price, _name
 
 def debug_print(msg):
