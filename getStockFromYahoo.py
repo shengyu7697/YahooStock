@@ -5,15 +5,15 @@ import requests
 import re
 
 def getStockFromYahoo(id):
-	r = requests.get("http://tw.stock.yahoo.com/q/q?s=%s" % id)
+	r = requests.get('http://tw.stock.yahoo.com/q/q?s=%s' % id)
 	content = r.content
 
 	# For finding stock price
-	iRE_price = re.compile(r".*nowrap><b>([\d.]+)<.*", re.I | re.U | re.M | re.S)
+	iRE_price = re.compile(r'.*nowrap><b>([\d.]+)<.*', re.I | re.U | re.M | re.S)
 
 	# For finding stock name
 	# pattern: >2330台積電</a><br><a href="/pf/pfsel?stocklist=
-	e = ".*>\d+" + r'(.+)</a><br><a href="/pf/pfsel\?stocklist=.*'
+	e = '.*>\d+' + r'(.+)</a><br><a href="/pf/pfsel\?stocklist=.*'
 	#debug_print(e)
 	iRE_name = re.compile(e, re.I | re.U | re.M | re.S)
 
@@ -29,7 +29,7 @@ def getStockFromYahoo(id):
 		print('Not found')
 
 	_price = float(match_price.groups()[0])
-	_name = unicode(match_name.groups()[0], "BIG5")
+	_name = unicode(match_name.groups()[0], 'BIG5')
 	return _price, _name
 
 def debug_print(msg):
