@@ -2,6 +2,9 @@ YahooStock
 ==========
 Get stock information from yahoo.  
 
+Demo gui.  
+![demo_gui](https://raw.github.com/shengyu7697/YahooStock/master/demo_qt.gif)  
+
 Demo on ubuntu.  
 ![demo](https://raw.github.com/shengyu7697/YahooStock/master/demo.gif)  
 
