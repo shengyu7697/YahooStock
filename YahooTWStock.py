@@ -4,9 +4,9 @@ from getStockFromYahoo import getStockFromYahoo
 
 class YahooTWStock(object):
     def __init__(self, stock_id):
-        self._id = stock_id
-        self._price = 0.0
-        self._name = ''
+        self._id = stock_id # str
+        self._price = 0.0 # float
+        self._name = '' # str
         #self.refresh() # refresh too slow, so call it later.
 
     def refresh(self):
