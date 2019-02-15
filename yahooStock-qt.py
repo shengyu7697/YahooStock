@@ -5,6 +5,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QDialogButtonBox,
         QLabel, QPushButton, QTableWidget, QTableWidgetItem,
         QVBoxLayout, QWidget, QHeaderView)
+from ui.gui import Ui_MainWindow
 from YahooTWStock import YahooTWStock
 
 class Worker(QtCore.QThread):
@@ -29,13 +30,13 @@ class Worker(QtCore.QThread):
                     break
             #self.sleep(1)
 
-class Window(QWidget):
+class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
-        super(self.__class__, self).__init__(parent)
+        QtWidgets.QMainWindow.__init__(self, parent)
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
 
-        self.label = QLabel("Press start to update stock")
-        self.label.setWordWrap(True)
-        self.label.adjustSize()
+        self.ui.statusbar.showMessage('Press start to update stock', 5000)
 
         stock_ids = ('2330', '2317', '2002', '1301', '2412', '2891', '0050', '0051', '0056', '00646')
 
@@ -49,24 +50,9 @@ class Window(QWidget):
 
         self.initTable()
 
-        self.startButton = QPushButton("Start")
-        self.stopButton = QPushButton("Stop")
-        self.quitButton = QPushButton("Quit")
-
-        self.buttonBox = QDialogButtonBox()
-        self.buttonBox.addButton(self.startButton, QDialogButtonBox.ActionRole)
-        self.buttonBox.addButton(self.stopButton, QDialogButtonBox.ActionRole)
-        self.buttonBox.addButton(self.quitButton, QDialogButtonBox.RejectRole)
-
-        self.startButton.pressed.connect(self.start)
-        self.stopButton.pressed.connect(self.stop)
-        self.quitButton.pressed.connect(self.close)
-
-        mainLayout = QVBoxLayout()
-        mainLayout.addWidget(self.label)
-        mainLayout.addWidget(self.table)
-        mainLayout.addWidget(self.buttonBox)
-        self.setLayout(mainLayout)
+        self.ui.pushButtonStart.clicked.connect(self.start)
+        self.ui.pushButtonStop.clicked.connect(self.stop)
+        self.ui.pushButtonExit.clicked.connect(self.close)
 
         self.setWindowTitle("YahooStock")
         self.setMinimumSize(300, 420)
@@ -74,22 +60,24 @@ class Window(QWidget):
 
     def start(self):
         print('start')
+        self.ui.statusbar.showMessage('Start', 2000)
         self.work.start()
 
     def stop(self):
         print('stop')
-        self.label.setText(self.tr('stop'))
+        self.ui.statusbar.showMessage('Stop', 2000)
         self.work.stop()
 
     def initTable(self):
-        self.table = QTableWidget()
+        self.table = self.ui.tableWidget
 
         self.table.setColumnCount(3)
         self.table.setHorizontalHeaderLabels(['股票代號', '股票名稱', '股價'])
 
         self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
-        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents) # 列寬設置
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)  # 列寬設置
+        #self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)  # 列寬設置
         self.table.horizontalHeader().setStretchLastSection(True) # 充滿列寬
         #self.table.verticalHeader().setSectionResizeMode(QHeaderView.Stretch) # 行高設置
         #self.table.verticalHeader().setStretchLastSection(True) # 充滿行高
@@ -127,12 +115,12 @@ class Window(QWidget):
 
     def updateStock(self, i, id, name, price):
         print('updateStock %d %s %s %f' % (i, id, name, price))
-        self.label.setText(self.tr('Update %d/%d...' % (i+1, len(self.yahoo))))
+        self.ui.statusbar.showMessage('Update %d/%d...' % (i+1, len(self.yahoo)), 2000)
         self.updateData(i, id, name, price)
         self.updateTable(i)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = Window()
-    window.show()
+    m = MainWindow()
+    m.show()
     sys.exit(app.exec_())
