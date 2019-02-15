@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 import sys
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QDialogButtonBox,
         QLabel, QPushButton, QTableWidget, QTableWidgetItem,
         QVBoxLayout, QWidget, QHeaderView)
-from PyQt5 import QtCore
 from YahooTWStock import YahooTWStock
 
 class Worker(QtCore.QThread):
@@ -30,9 +30,8 @@ class Worker(QtCore.QThread):
             #self.sleep(1)
 
 class Window(QWidget):
-
-    def __init__(self):
-        super(Window, self).__init__()
+    def __init__(self, parent=None):
+        super(self.__class__, self).__init__(parent)
 
         self.label = QLabel("Press start to update stock")
         self.label.setWordWrap(True)
@@ -91,9 +90,9 @@ class Window(QWidget):
         self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents) # 列寬設置
-        self.table.horizontalHeader().setStretchLastSection(True); # 充滿列寬
+        self.table.horizontalHeader().setStretchLastSection(True) # 充滿列寬
         #self.table.verticalHeader().setSectionResizeMode(QHeaderView.Stretch) # 行高設置
-        #self.table.verticalHeader().setStretchLastSection(True); # 充滿行高
+        #self.table.verticalHeader().setStretchLastSection(True) # 充滿行高
 
         self.table.setSelectionBehavior(QTableWidget.SelectRows) # 行選擇模式
         self.table.setSelectionMode(QAbstractItemView.SingleSelection); # 無法拖拽選擇
