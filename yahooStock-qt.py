@@ -36,7 +36,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.ui.statusbar.showMessage('Press start to update stock', 5000)
+        self.setWindowTitle("YahooStock")
+        self.move(100, 100)
+        self.show()
 
         stock_ids = ('2330', '2317', '2002', '1301', '2412', '2891', '0050', '0051', '0056', '00646')
 
@@ -50,13 +52,26 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.initTable()
 
+        self.setMenuAction()
+        self.setConnections()
+
+        self.ui.statusbar.showMessage('Press start to update stock', 5000)
+
+    def setMenuAction(self):
+        self.ui.actionExit.triggered.connect(self.close)
+        self.ui.actionLicense.triggered.connect(self.showLicense)
+        self.ui.actionAbout.triggered.connect(self.showAbout)
+
+    def showLicense(self):
+        QtWidgets.QMessageBox.information(self, 'License', '')
+
+    def showAbout(self):
+        QtWidgets.QMessageBox.information(self, 'About', '')
+
+    def setConnections(self):
         self.ui.pushButtonStart.clicked.connect(self.start)
         self.ui.pushButtonStop.clicked.connect(self.stop)
         self.ui.pushButtonExit.clicked.connect(self.close)
-
-        self.setWindowTitle("YahooStock")
-        self.setMinimumSize(300, 420)
-        self.move(50, 50)
 
     def start(self):
         print('start')
