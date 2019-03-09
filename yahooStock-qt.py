@@ -11,6 +11,7 @@ import csv
 
 class Worker(QtCore.QThread):
     signalDataChanged = QtCore.pyqtSignal(int, str, str, float) # 信號
+    notifyProgress = QtCore.pyqtSignal(int)
 
     def __init__(self, yahoo, parent=None):
         super(self.__class__, self).__init__(parent)
@@ -27,6 +28,7 @@ class Worker(QtCore.QThread):
                 #print('%6s | %s | %.2f' % (self.yahoo[i].get_id(), self.yahoo[i].get_name(), self.yahoo[i].get_price()))
                 if (self.working):
                     self.signalDataChanged.emit(i, self.yahoo[i].get_id(), self.yahoo[i].get_name(), self.yahoo[i].get_price())  # 發送信號
+                    self.notifyProgress.emit(i)
                 else:
                     break
             #self.sleep(1)
@@ -36,6 +38,12 @@ class MainWindow(QtWidgets.QMainWindow):
         QtWidgets.QMainWindow.__init__(self, parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        self.progressBar = QtWidgets.QProgressBar()
+        self.progressBar.setRange(0, 100)
+        self.statusBar().addPermanentWidget(self.progressBar)
+        self.statusBar().setSizeGripEnabled(False)
+        self.statusBar().setStyleSheet("QStatusBar::item {border: none;}")
 
         self.setWindowTitle("YahooStock")
         self.move(100, 100)
@@ -51,13 +59,14 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.work = Worker(self.yahoo)
         self.work.signalDataChanged.connect(self.updateStock)
+        self.work.notifyProgress.connect(self.onProgress)
 
         self.initTable()
 
         self.setMenuAction()
         self.setConnections()
 
-        self.ui.statusbar.showMessage('Press start to update stock', 5000)
+        self.ui.statusbar.showMessage('Press start to update', 5000)
 
     def loadStockCsv(self, fname):
         with open(fname, newline='') as csvfile:
@@ -136,6 +145,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.table.setItem(i, 1, QTableWidgetItem(str(self.data['股票名稱'][i])))
         self.table.setItem(i, 2, QTableWidgetItem(str(self.data['股價'][i])))
 
+
     def updateData(self, i, id, name, price):
         print('updateData')
         self.data['股票代號'][i] = id
@@ -147,6 +157,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.statusbar.showMessage('Update %d/%d...' % (i+1, len(self.yahoo)), 2000)
         self.updateData(i, id, name, price)
         self.updateTable(i)
+
+    def onProgress(self, i):
+        self.progressBar.setValue(100 * (i + 1) / len(self.yahoo))
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
