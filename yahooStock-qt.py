@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QDialogButtonBox,
         QVBoxLayout, QWidget, QHeaderView)
 from ui.gui import Ui_MainWindow
 from YahooTWStock import YahooTWStock
+import csv
 
 class Worker(QtCore.QThread):
     signalDataChanged = QtCore.pyqtSignal(int, str, str, float) # 信號
@@ -40,7 +41,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.move(100, 100)
         self.show()
 
-        stock_ids = ('2330', '2317', '2002', '1301', '2412', '2891', '0050', '0051', '0056', '00646')
+        stock_ids = self.loadStockCsv('stock.csv')
+        #stock_ids = ['2330', '2317', '2002', '1301', '2412', '2891', '0050', '0051', '0056', '00646']
 
         self.yahoo = []
         for stock_id in stock_ids:
@@ -56,6 +58,18 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setConnections()
 
         self.ui.statusbar.showMessage('Press start to update stock', 5000)
+
+    def loadStockCsv(self, fname):
+        with open(fname, newline='') as csvfile:
+            #rows = csv.reader(csvfile, delimiter=',')
+            rows = csv.DictReader(csvfile, delimiter=',')
+
+            # get column value
+            stockIdList = []
+            for row in rows:
+                stockIdList.append(row['stock id'])
+            #print(stockIdList)
+        return stockIdList
 
     def setMenuAction(self):
         self.ui.actionExit.triggered.connect(self.close)
