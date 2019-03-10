@@ -24,10 +24,11 @@ class Worker(QtCore.QThread):
         self.working = True
         while self.working:
             for i in range(len(self.yahoo)):
+                print(i)
                 self.yahoo[i].refresh()
-                #print('%6s | %s | %.2f' % (self.yahoo[i].get_id(), self.yahoo[i].get_name(), self.yahoo[i].get_price()))
+                print('%6s | %s | %.2f' % (self.yahoo[i].id, self.yahoo[i].name, self.yahoo[i].price))
                 if (self.working):
-                    self.signalDataChanged.emit(i, self.yahoo[i].get_id(), self.yahoo[i].get_name(), self.yahoo[i].get_price())  # 發送信號
+                    self.signalDataChanged.emit(i, self.yahoo[i].id, self.yahoo[i].name, self.yahoo[i].price)  # 發送信號
                     self.notifyProgress.emit(i)
                 else:
                     break
@@ -95,6 +96,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.pushButtonStart.clicked.connect(self.start)
         self.ui.pushButtonStop.clicked.connect(self.stop)
         self.ui.pushButtonExit.clicked.connect(self.close)
+        self.ui.pushButtonAdd.clicked.connect(self.add)
 
     def start(self):
         print('start')
@@ -105,6 +107,11 @@ class MainWindow(QtWidgets.QMainWindow):
         print('stop')
         self.ui.statusbar.showMessage('Stop', 2000)
         self.work.stop()
+
+    def add(self):
+        print('add')
+        self.ui.statusbar.showMessage('Add', 2000)
+        self.appendDataAndTable()
 
     def initTable(self):
         self.table = self.ui.tableWidget
@@ -125,9 +132,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.data = {'股票代號' : [], '股票名稱' : [], '股價' : []}
         for i in range(len(self.yahoo)):
-            self.data['股票代號'].append(str(''))
-            self.data['股票名稱'].append(str(''))
-            self.data['股價'].append(str(''))
+            self.data['股票代號'].append(str(self.yahoo[i].id))
+            self.data['股票名稱'].append(str('none'))
+            self.data['股價'].append(str('0'))
 
         self.insertTable()
 
@@ -139,12 +146,31 @@ class MainWindow(QtWidgets.QMainWindow):
             self.table.setItem(i, 1, QTableWidgetItem(str(self.data['股票名稱'][i])))
             self.table.setItem(i, 2, QTableWidgetItem(str(self.data['股價'][i])))
 
+    def appendDataAndTable(self):
+        stock_id = self.ui.lineEdit.text()
+        name = 'none'
+        price = 0
+
+        # appendData
+        self.data['股票代號'].append(str(stock_id))
+        self.data['股票名稱'].append(str(name))
+        self.data['股價'].append(str(price))
+
+        # appendTable
+        i = self.table.rowCount()
+        self.table.insertRow(i)
+        self.table.setItem(i, 0, QTableWidgetItem(str(self.data['股票代號'][i])))
+        self.table.setItem(i, 1, QTableWidgetItem(str(self.data['股票名稱'][i])))
+        self.table.setItem(i, 2, QTableWidgetItem(str(self.data['股價'][i])))
+
+        # update stock to self.yahoo list
+        self.yahoo.append(YahooTWStock(stock_id))
+
     def updateTable(self, i):
         print('updateTable')
         self.table.setItem(i, 0, QTableWidgetItem(str(self.data['股票代號'][i])))
         self.table.setItem(i, 1, QTableWidgetItem(str(self.data['股票名稱'][i])))
         self.table.setItem(i, 2, QTableWidgetItem(str(self.data['股價'][i])))
-
 
     def updateData(self, i, id, name, price):
         print('updateData')

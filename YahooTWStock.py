@@ -12,13 +12,16 @@ class YahooTWStock(object):
     def refresh(self):
         self._request()
 
-    def get_id(self):
+    @property
+    def id(self):
         return self._id
 
-    def get_price(self):
+    @property
+    def price(self):
         return self._price
 
-    def get_name(self):
+    @property
+    def name(self):
         return self._name
 
     def _request(self):

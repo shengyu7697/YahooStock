@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(340, 420)
+        MainWindow.resize(340, 480)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -26,6 +26,15 @@ class Ui_MainWindow(object):
         self.tableWidget.setRowCount(0)
         self.horizontalLayout.addWidget(self.tableWidget)
         self.verticalLayout.addLayout(self.horizontalLayout)
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
+        self.lineEdit.setObjectName("lineEdit")
+        self.horizontalLayout_3.addWidget(self.lineEdit)
+        self.pushButtonAdd = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButtonAdd.setObjectName("pushButtonAdd")
+        self.horizontalLayout_3.addWidget(self.pushButtonAdd)
+        self.verticalLayout.addLayout(self.horizontalLayout_3)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.pushButtonStart = QtWidgets.QPushButton(self.centralwidget)
@@ -69,6 +78,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.pushButtonAdd.setText(_translate("MainWindow", "Add"))
         self.pushButtonStart.setText(_translate("MainWindow", "Start"))
         self.pushButtonStop.setText(_translate("MainWindow", "Stop"))
         self.pushButtonExit.setText(_translate("MainWindow", "Exit"))
