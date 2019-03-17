@@ -66,6 +66,12 @@ class Ui_MainWindow(object):
         self.actionAbout.setObjectName("actionAbout")
         self.actionLicense = QtWidgets.QAction(MainWindow)
         self.actionLicense.setObjectName("actionLicense")
+        self.actionLoad = QtWidgets.QAction(MainWindow)
+        self.actionLoad.setObjectName("actionLoad")
+        self.actionSave = QtWidgets.QAction(MainWindow)
+        self.actionSave.setObjectName("actionSave")
+        self.menuFile.addAction(self.actionLoad)
+        self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionExit)
         self.menuHelp.addAction(self.actionLicense)
         self.menuHelp.addAction(self.actionAbout)
@@ -87,6 +93,8 @@ class Ui_MainWindow(object):
         self.actionExit.setText(_translate("MainWindow", "Exit"))
         self.actionAbout.setText(_translate("MainWindow", "About"))
         self.actionLicense.setText(_translate("MainWindow", "License"))
+        self.actionLoad.setText(_translate("MainWindow", "Load"))
+        self.actionSave.setText(_translate("MainWindow", "Save"))
 
 
 if __name__ == "__main__":
