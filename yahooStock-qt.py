@@ -4,8 +4,9 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QDialogButtonBox,
         QLabel, QPushButton, QTableWidget, QTableWidgetItem,
-        QVBoxLayout, QWidget, QHeaderView)
+        QVBoxLayout, QWidget, QHeaderView, QDialog)
 from ui.gui import Ui_MainWindow
+from ui.license import Ui_Dialog
 from YahooTWStock import YahooTWStock
 import csv
 from concurrent.futures import ThreadPoolExecutor
@@ -115,7 +116,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.actionAbout.triggered.connect(self.showAbout)
 
     def showLicense(self):
-        QtWidgets.QMessageBox.information(self, 'License', '')
+        licenseDialog = QDialog(self)
+        uiDialog = Ui_Dialog()
+        uiDialog.setupUi(licenseDialog)
+        uiDialog.ExitButton.clicked.connect(licenseDialog.close)
+        licenseDialog.show()
 
     def showAbout(self):
         QtWidgets.QMessageBox.information(self, 'About', '')
