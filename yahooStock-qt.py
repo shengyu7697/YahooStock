@@ -12,6 +12,8 @@ import csv
 from concurrent.futures import ThreadPoolExecutor
 import concurrent.futures
 
+VERSION = '1.0.0'
+
 class Worker(QtCore.QThread):
     signalDataChanged = QtCore.pyqtSignal(int, str, str, float) # 信號
     notifyProgress = QtCore.pyqtSignal(int)
@@ -123,7 +125,8 @@ class MainWindow(QtWidgets.QMainWindow):
         licenseDialog.show()
 
     def showAbout(self):
-        QtWidgets.QMessageBox.information(self, 'About', '')
+        QtWidgets.QMessageBox.information(self, 'About', 'YahooStock ' + VERSION + '\n'
+                                          'Author: ShengYu')
 
     def setConnections(self):
         self.ui.pushButtonStart.clicked.connect(self.start)
