@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from getStockFromYahoo import getStockFromYahoo
+# from getStockFromTWSE import getStockFromTWSE
 
 class YahooTWStock(object):
     def __init__(self, stock_id):
@@ -26,3 +27,5 @@ class YahooTWStock(object):
 
     def _request(self):
         self._price, self._name = getStockFromYahoo(self._id)
+        # backup
+        # self._price, self._name = getStockFromTWSE(self._id)
