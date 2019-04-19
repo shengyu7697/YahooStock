@@ -11,7 +11,7 @@ from YahooTWStock import YahooTWStock
 from concurrent.futures import ThreadPoolExecutor
 import concurrent.futures
 
-VERSION = '1.0.0'
+VERSION = '1.1.0'
 
 class Worker(QtCore.QThread):
     signalDataChanged = QtCore.pyqtSignal(int, str, str, float) # 信號
