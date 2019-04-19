@@ -150,7 +150,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.work.signalDataChanged.connect(self.updateStock)
         self.work.notifyProgress.connect(self.onProgress)
 
-        self.initTable()
+        self.initDataAndTable()
         self.ui.statusbar.showMessage('Load done.', 2000)
 
     def save(self):
@@ -179,7 +179,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.statusbar.showMessage('Add', 2000)
         self.appendDataAndTable()
 
-    def initTable(self):
+    def initDataAndTable(self):
+        # initTable
         self.table = self.ui.tableWidget
 
         self.table.setColumnCount(3)
@@ -196,15 +197,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.table.setSelectionBehavior(QTableWidget.SelectRows) # 行選擇模式
         self.table.setSelectionMode(QAbstractItemView.SingleSelection); # 無法拖拽選擇
 
+        # initData
         self.data = {'股票代號' : [], '股票名稱' : [], '股價' : []}
         for i in range(len(self.yahoo)):
             self.data['股票代號'].append(str(self.yahoo[i].id))
             self.data['股票名稱'].append(str('none'))
             self.data['股價'].append(str('0'))
 
-        self.insertTable()
-
-    def insertTable(self):
+        # insertTable
         self.table.setRowCount(0)
         for i in range(len(self.yahoo)):
             self.table.insertRow(i)
