@@ -16,13 +16,10 @@ class StockTable():
         pass
 
     def load(self):
-        # stock_ids = loadFromStockCsv('stock.csv')
-        stock_ids = ['2330', '2317', '2002', '1301', '2412', '2891', '0050', '0051', '0056', '00646']
-
         self.yahoo = YahooTWStock()
-        for stock_id in stock_ids:
-            # Storing a list of object instances
-            self.yahoo.add(stock_id)
+        self.yahoo.loadFromStockCsv('stock.csv')
+        # stockIdList = ['2330', '2317', '2002', '1301', '2412', '2891', '0050', '0051', '0056', '00646']
+        # self.yahoo.addStockIdList(stockIdList)
 
         self.initDataAndTable()
 
@@ -76,6 +73,7 @@ if __name__ == '__main__':
         sys.setdefaultencoding('utf8')
 
     stockTable = StockTable()
+    clearScreen()
     stockTable.showTable()
 
     while (1):

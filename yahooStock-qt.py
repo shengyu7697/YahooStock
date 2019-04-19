@@ -8,7 +8,6 @@ from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QDialogButtonBox,
 from ui.gui import Ui_MainWindow
 from ui.license import Ui_Dialog
 from YahooTWStock import YahooTWStock
-import csv
 from concurrent.futures import ThreadPoolExecutor
 import concurrent.futures
 
@@ -91,25 +90,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.pushButtonStart.setEnabled(True)
         self.ui.pushButtonStop.setEnabled(False)
 
-    def loadFromStockCsv(self, fname):
-        with open(fname, newline='') as csvfile:
-            #rows = csv.reader(csvfile, delimiter=',')
-            rows = csv.DictReader(csvfile, delimiter=',')
-
-            # get column value
-            stockIdList = []
-            for row in rows:
-                stockIdList.append(row['stock id'])
-            #print(stockIdList)
-        return stockIdList
-
-    def saveToStockCsv(self, fname):
-        with open(fname, 'w', newline='') as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow(['stock id', 'stock name', 'price'])
-            for i in range(self.yahoo.size):
-                writer.writerow([self.yahoo.id(i), self.yahoo.name(i), self.yahoo.price(i)])
-
     def setMenuAction(self):
         self.ui.actionLoad.triggered.connect(self.load)
         self.ui.actionSave.triggered.connect(self.save)
@@ -138,13 +118,10 @@ class MainWindow(QtWidgets.QMainWindow):
         print('load')
         self.ui.statusbar.showMessage('Load', 2000)
 
-        stock_ids = self.loadFromStockCsv('stock.csv')
-        #stock_ids = ['2330', '2317', '2002', '1301', '2412', '2891', '0050', '0051', '0056', '00646']
-
         self.yahoo = YahooTWStock()
-        for stock_id in stock_ids:
-            # Storing a list of object instances
-            self.yahoo.add(stock_id)
+        self.yahoo.loadFromStockCsv('stock.csv')
+        # stockIdList = ['2330', '2317', '2002', '1301', '2412', '2891', '0050', '0051', '0056', '00646']
+        # self.yahoo.addStockIdList(stockIdList)
 
         self.work = Worker(self.yahoo)
         self.work.signalDataChanged.connect(self.updateStock)
@@ -157,7 +134,7 @@ class MainWindow(QtWidgets.QMainWindow):
         print('save')
         self.ui.statusbar.showMessage('Save', 2000)
 
-        self.saveToStockCsv('stock.csv')
+        self.yahoo.saveToStockCsv('stock.csv')
         self.ui.statusbar.showMessage('Save done.', 2000)
 
     def start(self):
