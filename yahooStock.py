@@ -8,7 +8,9 @@ import sys
 # from terminaltables import AsciiTable
 from terminaltables import SingleTable
 
+
 class StockTable():
+
     def __init__(self, parent=None):
         self.load()
         pass
@@ -17,18 +19,18 @@ class StockTable():
         # stock_ids = loadFromStockCsv('stock.csv')
         stock_ids = ['2330', '2317', '2002', '1301', '2412', '2891', '0050', '0051', '0056', '00646']
 
-        self.yahoo = []
+        self.yahoo = YahooTWStock()
         for stock_id in stock_ids:
             # Storing a list of object instances
-            self.yahoo.append(YahooTWStock(stock_id))
+            self.yahoo.add(stock_id)
 
         self.initDataAndTable()
 
     def initDataAndTable(self):
         self.data = []
         self.data.append(['股票代號', '股票名稱', '股價'])
-        for i in range(len(self.yahoo)):
-            self.data.append([str(self.yahoo[i].id), 'none', '0'])
+        for i in range(self.yahoo.size):
+            self.data.append([str(self.yahoo.id(i)), 'none', '0'])
 
         # self.table = AsciiTable(self.data)
         self.table = SingleTable(self.data)
@@ -53,10 +55,10 @@ class StockTable():
         self.run()
 
     def run(self):
-        for i in range(len(self.yahoo)):
-            self.yahoo[i].refresh()
-            # print('%6s | %s | %.2f' % (yahoo[i].id, yahoo[i].name, yahoo[i].price))
-            self.updateStock(i, self.yahoo[i].id, self.yahoo[i].name, self.yahoo[i].price)
+        for i in range(self.yahoo.size):
+            self.yahoo.refresh(i)
+            # print('%6s | %s | %.2f' % (yahoo.id(i), yahoo[i].name, yahoo[i].price))
+            self.updateStock(i, self.yahoo.id(i), self.yahoo.name(i), self.yahoo.price(i))
 
     def showTable(self):
         print(self.table.table)

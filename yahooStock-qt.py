@@ -27,17 +27,17 @@ class Worker(QtCore.QThread):
         self.working = False
 
     def task(self, i):
-        self.yahoo[i].refresh()
-        print('%6s | %s | %.2f' % (self.yahoo[i].id, self.yahoo[i].name, self.yahoo[i].price))
+        self.yahoo.refresh(i)
+        # print('%6s | %s | %.2f' % (self.yahoo.id(i), self.yahoo.name(i), self.yahoo.price(i)))
         return i
 
     def callback(self, future):
         i = future.result()
-        print(i)
+        # print('future.result =', i)
 
-        self.signalDataChanged.emit(i, self.yahoo[i].id, self.yahoo[i].name, self.yahoo[i].price)  # 發送信號
+        self.signalDataChanged.emit(i, self.yahoo.id(i), self.yahoo.name(i), self.yahoo.price(i))  # 發送信號
 
-        self.progress += 100 / len(self.yahoo)
+        self.progress += 100 / self.yahoo.size
         self.notifyProgress.emit(self.progress)
 
     def run(self):
@@ -46,14 +46,14 @@ class Worker(QtCore.QThread):
             self.progress = 0
 
             #executor = ThreadPoolExecutor(max_workers=5)
-            #for i in range(len(self.yahoo)):
+            #for i in range(self.yahoo.size):
             #    future = executor.submit(self.task, i)
             #    future.add_done_callback(self.callback)
             #executor.shutdown(wait=True)
 
             with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
                 futureList = []
-                for i in range(len(self.yahoo)):
+                for i in range(self.yahoo.size):
                     future = executor.submit(self.task, i)
                     future.add_done_callback(self.callback)
                     futureList.append(future)
@@ -107,8 +107,8 @@ class MainWindow(QtWidgets.QMainWindow):
         with open(fname, 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
             writer.writerow(['stock id', 'stock name', 'price'])
-            for i in range(len(self.yahoo)):
-                writer.writerow([self.yahoo[i].id, self.yahoo[i].name, self.yahoo[i].price])
+            for i in range(self.yahoo.size):
+                writer.writerow([self.yahoo.id(i), self.yahoo.name(i), self.yahoo.price(i)])
 
     def setMenuAction(self):
         self.ui.actionLoad.triggered.connect(self.load)
@@ -141,10 +141,10 @@ class MainWindow(QtWidgets.QMainWindow):
         stock_ids = self.loadFromStockCsv('stock.csv')
         #stock_ids = ['2330', '2317', '2002', '1301', '2412', '2891', '0050', '0051', '0056', '00646']
 
-        self.yahoo = []
+        self.yahoo = YahooTWStock()
         for stock_id in stock_ids:
             # Storing a list of object instances
-            self.yahoo.append(YahooTWStock(stock_id))
+            self.yahoo.add(stock_id)
 
         self.work = Worker(self.yahoo)
         self.work.signalDataChanged.connect(self.updateStock)
@@ -199,14 +199,14 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # initData
         self.data = {'股票代號' : [], '股票名稱' : [], '股價' : []}
-        for i in range(len(self.yahoo)):
-            self.data['股票代號'].append(str(self.yahoo[i].id))
+        for i in range(self.yahoo.size):
+            self.data['股票代號'].append(str(self.yahoo.id(i)))
             self.data['股票名稱'].append(str('none'))
             self.data['股價'].append(str('0'))
 
         # insertTable
         self.table.setRowCount(0)
-        for i in range(len(self.yahoo)):
+        for i in range(self.yahoo.size):
             self.table.insertRow(i)
             self.table.setItem(i, 0, QTableWidgetItem(str(self.data['股票代號'][i])))
             self.table.setItem(i, 1, QTableWidgetItem(str(self.data['股票名稱'][i])))
@@ -246,7 +246,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def updateStock(self, i, id, name, price):
         print('updateStock %d %s %s %f' % (i, id, name, price))
-        self.ui.statusbar.showMessage('Update %d/%d...' % (i+1, len(self.yahoo)), 2000)
+        self.ui.statusbar.showMessage('Update %d/%d...' % (i+1, self.yahoo.size), 2000)
         self.updateData(i, id, name, price)
         self.updateTable(i)
 
