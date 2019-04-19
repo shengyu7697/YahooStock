@@ -3,7 +3,7 @@ YahooStock
 YahooStock 是一個從 Yahoo 網站取得股票資訊的小工具， 分為 gui 版與 console 版。
 
 Demo gui.  
-![demo_gui](https://raw.github.com/shengyu7697/YahooStock/master/demo_qt.gif)  
+![demo_gui](https://raw.github.com/shengyu7697/YahooStock/master/demo_gui.gif)  
 
 Demo on ubuntu.  
 ![demo](https://raw.github.com/shengyu7697/YahooStock/master/demo.gif)  
